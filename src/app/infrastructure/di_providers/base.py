@@ -5,10 +5,10 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
     AsyncEngine,
 )
-from infrastructure.config import config
+from src.app.infrastructure.config import config
 from collections.abc import AsyncGenerator
-from infrastructure.database.transaction import TransactionAlchemyManager
-from application.interfaces.transaction_interfaces import TransactionAlchemyManagerProtocol
+from src.app.infrastructure.database.transaction import TransactionAlchemyManager
+from src.app.application.interfaces.transaction_interfaces import TransactionAlchemyManagerProtocol
 
 class BaseProvider(Provider):
     @provide(scope=Scope.APP)

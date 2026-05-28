@@ -1,6 +1,6 @@
-from presentation.private_router import private_common_router
+from src.app.presentation.private_router import private_common_router
 from aiogram import Dispatcher, Bot
-from infrastructure.config import config
+from src.app.infrastructure.config import config
 import asyncio
 
 bot = Bot(token=config.telegram.bot_token.get_secret_value())

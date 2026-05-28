@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import BigInteger, VARCHAR, ForeignKey
-from domain.base import Base
+from src.app.domain.base import Base
 from uuid import UUID
 from uuid6 import uuid7
 

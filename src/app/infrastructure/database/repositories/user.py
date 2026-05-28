@@ -3,7 +3,7 @@ from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from domain import User
+from src.app.domain import User
 
 class UserRepository:
     __slots__ = ("_session", )

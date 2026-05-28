@@ -1,5 +1,5 @@
 from typing import Protocol
-from domain import Base
+from src.app.domain import Base
 
 class TransactionAlchemyManagerProtocol(Protocol):
     async def commit(self) -> None: ... 

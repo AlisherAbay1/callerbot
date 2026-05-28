@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from domain import Base
+from src.app.domain import Base
 
 class TransactionAlchemyManager:
     __slots__ = ("_session", )
