@@ -1,12 +1,20 @@
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
 import inspect
+from dishka import FromDishka
+from src.app.application.interactors.private import StartInteractor
 
 router = Router(name="privat common router")
 
-@router.message(CommandStart())
-async def start(message: Message):
+@router.message(CommandStart(), F.chat.type == "private")
+async def start(message: Message, 
+                interactor: FromDishka[StartInteractor]):
+    user = message.from_user
+    if user is None:
+        await message.answer("Вы не можете писать от лица канала.")
+        return 
+    await interactor(user.id)
     text = """
             Привет!
             Я бот, который будет тегать всех зарегистрировавшихся юзеров.
@@ -23,7 +31,7 @@ async def start(message: Message):
             /setme (emoji) - устанавливает глобальный эмодзи.
             /unsetme -  убирает глобальный эмодзи.
 
-            В личных сообщениях вы можете выбрать глобальный параметр регистации, \
+            В личных сообщениях вы можете выбрать глобальный параметр регистации, 
             однако локальные параметры регистрации имеют больший приоритет. 
             Аналогичная ситуация с emoji. 
            """

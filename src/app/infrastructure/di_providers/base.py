@@ -8,7 +8,8 @@ from sqlalchemy.ext.asyncio import (
 from src.app.infrastructure.config import config
 from collections.abc import AsyncGenerator
 from src.app.infrastructure.database.transaction import TransactionAlchemyManager
-from src.app.application.interfaces.transaction_interfaces import TransactionAlchemyManagerProtocol
+from src.app.infrastructure.random_emoji import Emoji
+from src.app.application.interfaces import TransactionAlchemyManagerProtocol, EmojiProtocol
 
 class BaseProvider(Provider):
     @provide(scope=Scope.APP)
@@ -27,3 +28,4 @@ class BaseProvider(Provider):
             yield session
 
     transaction = provide(TransactionAlchemyManager, scope=Scope.REQUEST, provides=TransactionAlchemyManagerProtocol)
+    emoji = provide(Emoji, scope=Scope.APP, provides=EmojiProtocol)
