@@ -11,13 +11,10 @@ from src.app.application.interactors.private import (
 router = Router(name="privat common router")
 
 
-@router.message(CommandStart(), F.chat.type == "private")
+@router.message(CommandStart(), F.chat.type == "private" & F.from_user)
 async def start(message: Message, interactor: FromDishka[StartInteractor]):
-    user = message.from_user
-    if user is None:
-        await message.answer("Вы не можете писать от лица канала.")
-        return
-    await interactor(user.id)
+    assert message.from_user
+    await interactor(message.from_user.id)
     text = """
             Привет!
             Я бот, который будет тегать всех зарегистрировавшихся юзеров.
@@ -42,11 +39,8 @@ async def start(message: Message, interactor: FromDishka[StartInteractor]):
     await message.answer(inspect.cleandoc(text))
 
 
-@router.message(Command("reg"))
+@router.message(Command("reg"), F.from_user)
 async def reg(message: Message, interactor: FromDishka[RegisterUserGlobalyInteractor]):
-    user = message.from_user
-    if user is None:
-        await message.answer("Вы не можете писать от лица канала.")
-        return
-    await interactor(user.id)
+    assert message.from_user
+    await interactor(message.from_user.id)
     await message.answer("Вы установили глобальную регистрацию.")
