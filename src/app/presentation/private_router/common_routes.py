@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.filters import Command, CommandStart
+from aiogram.filters import Command, CommandStart, CommandObject
 from aiogram.types import Message
 import inspect
 from dishka import FromDishka
@@ -7,7 +7,9 @@ from src.app.application.interactors.private import (
     StartInteractor,
     RegisterUserGlobalyInteractor,
     UnRegisterUserGlobalyInteractor,
+    SetEmojiGlobalyInteractor,
 )
+from regex import match
 
 router = Router(name="privat common router")
 
@@ -47,10 +49,28 @@ async def reg(message: Message, interactor: FromDishka[RegisterUserGlobalyIntera
     await message.answer("Вы установили глобальную регистрацию.")
 
 
-@router.message(Command("reg"), F.from_user)
+@router.message(Command("unreg"), F.from_user)
 async def unreg(
     message: Message, interactor: FromDishka[UnRegisterUserGlobalyInteractor]
 ):
     assert message.from_user
     await interactor(message.from_user.id)
     await message.answer("Вы убрали глобальную регистрацию.")
+
+
+@router.message(Command("setme"), F.from_user)
+async def setme(
+    message: Message,
+    command: CommandObject,
+    interactor: FromDishka[SetEmojiGlobalyInteractor],
+):
+    assert message.from_user
+    text = command.args
+    if text is None:
+        await message.answer("Вы должны передать смайлик.")
+        return
+    if not match(r"^\p{emoji}$", text):
+        await message.answer("Передайте эмодзи.")
+        return
+    await interactor(message.from_user.id, text)
+    await message.answer(f"Вы установили глобальный эмодзи: {text}")
