@@ -7,9 +7,11 @@ from sqlalchemy import URL
 _ENV_CONFIG = Path(__file__).parents[3] / ".env"
 _TOML_CONFIG = Path(__file__).parents[3] / "config.toml"
 
+
 @dataclass
 class TelegramConfig:
     bot_token: SecretStr
+
 
 @dataclass
 class DatabaseConfig:
@@ -30,31 +32,28 @@ class DatabaseConfig:
             database=self.name,
         )
 
+
 @dataclass
 class Config:
     telegram: TelegramConfig
     database: DatabaseConfig
 
+
 def load_config():
     telegram = load(
         EnvFileSource(
-            file=_ENV_CONFIG, 
-            field_mapping={
-            F[TelegramConfig].bot_token: "BOT_TOKEN"
-            }
-        ), 
-        schema=TelegramConfig
+            file=_ENV_CONFIG, field_mapping={F[TelegramConfig].bot_token: "BOT_TOKEN"}
+        ),
+        schema=TelegramConfig,
     )
     database = load(
         EnvFileSource(
-            file=_ENV_CONFIG, 
-            field_mapping={
-            F[DatabaseConfig].password: "DB_PASSWORD"
-            }
-        ), 
-        Toml10Source(file=_TOML_CONFIG, prefix="database"), 
-        schema=DatabaseConfig
+            file=_ENV_CONFIG, field_mapping={F[DatabaseConfig].password: "DB_PASSWORD"}
+        ),
+        Toml10Source(file=_TOML_CONFIG, prefix="database"),
+        schema=DatabaseConfig,
     )
     return Config(telegram=telegram, database=database)
+
 
 config = load_config()

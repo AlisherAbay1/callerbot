@@ -1,9 +1,15 @@
-from src.app.application.interfaces import UserRepositoryProtocol, TransactionAlchemyManagerProtocol
+from src.app.application.interfaces import (
+    UserRepositoryProtocol,
+    TransactionAlchemyManagerProtocol,
+)
+
 
 class RegisterUserGlobalyInteractor:
-    def __init__(self, 
-                 repo: UserRepositoryProtocol,
-                 transaction: TransactionAlchemyManagerProtocol) -> None:
+    def __init__(
+        self,
+        repo: UserRepositoryProtocol,
+        transaction: TransactionAlchemyManagerProtocol,
+    ) -> None:
         self.repo = repo
         self.transaction = transaction
 

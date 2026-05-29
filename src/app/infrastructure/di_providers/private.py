@@ -1,7 +1,11 @@
 from dishka import Provider, Scope, provide
 from src.app.infrastructure.database.repositories import UserRepository
 from src.app.application.interfaces import UserRepositoryProtocol
-from src.app.application.interactors.private import StartInteractor, RegisterUserGlobalyInteractor
+from src.app.application.interactors.private import (
+    StartInteractor,
+    RegisterUserGlobalyInteractor,
+)
+
 
 class PrivateProvider(Provider):
     scope = Scope.REQUEST

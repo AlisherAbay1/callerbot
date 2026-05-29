@@ -1,8 +1,9 @@
-from src.app.domain import User, Chat, UsersToChats
+from src.app.domain import User
 from typing import Protocol
 
 from typing import Optional
 from uuid import UUID
+
 
 class UserRepositoryProtocol(Protocol):
     async def get_user_by_id(self, id: UUID) -> Optional[User]: ...

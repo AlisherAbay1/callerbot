@@ -1,8 +1,9 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import BigInteger, VARCHAR
+from sqlalchemy import BigInteger
 from src.app.domain.base import Base
 from uuid import UUID
 from uuid6 import uuid7
+
 
 class Chat(Base, kw_only=True):
     __tablename__ = "chat"

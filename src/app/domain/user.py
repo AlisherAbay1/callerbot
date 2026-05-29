@@ -5,6 +5,7 @@ from uuid import UUID
 from uuid6 import uuid7
 from typing import Optional
 
+
 class User(Base, kw_only=True):
     __tablename__ = "user"
 
