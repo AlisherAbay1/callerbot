@@ -8,13 +8,14 @@ from src.app.application.interactors.private import (
     RegisterUserGlobalyInteractor,
     UnRegisterUserGlobalyInteractor,
     SetEmojiGlobalyInteractor,
+    UnSetEmojiGlobalyInteractor,
 )
-from regex import match
+from emoji import is_emoji, emoji_count
 
 router = Router(name="privat common router")
 
 
-@router.message(CommandStart(), F.chat.type == "private" & F.from_user)
+@router.message(CommandStart(), (F.chat.type == "private") & F.from_user)
 async def start(message: Message, interactor: FromDishka[StartInteractor]):
     assert message.from_user
     await interactor(message.from_user.id)
@@ -69,8 +70,19 @@ async def setme(
     if text is None:
         await message.answer("Вы должны передать смайлик.")
         return
-    if not match(r"^\p{emoji}$", text):
+    print(text)
+    if not (is_emoji(text) and emoji_count(text) == 1):
         await message.answer("Передайте эмодзи.")
         return
     await interactor(message.from_user.id, text)
     await message.answer(f"Вы установили глобальный эмодзи: {text}")
+
+
+@router.message(Command("unsetme"), F.from_user)
+async def unsetme(
+    message: Message,
+    interactor: FromDishka[UnSetEmojiGlobalyInteractor],
+):
+    assert message.from_user
+    await interactor(message.from_user.id)
+    await message.answer("Вы убрали глобальный эмодзи")
