@@ -6,6 +6,7 @@ from dishka import FromDishka
 from src.app.application.interactors.private import (
     StartInteractor,
     RegisterUserGlobalyInteractor,
+    UnRegisterUserGlobalyInteractor,
 )
 
 router = Router(name="privat common router")
@@ -44,3 +45,12 @@ async def reg(message: Message, interactor: FromDishka[RegisterUserGlobalyIntera
     assert message.from_user
     await interactor(message.from_user.id)
     await message.answer("Вы установили глобальную регистрацию.")
+
+
+@router.message(Command("reg"), F.from_user)
+async def unreg(
+    message: Message, interactor: FromDishka[UnRegisterUserGlobalyInteractor]
+):
+    assert message.from_user
+    await interactor(message.from_user.id)
+    await message.answer("Вы убрали глобальную регистрацию.")
