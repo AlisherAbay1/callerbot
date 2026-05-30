@@ -3,6 +3,7 @@ from .register_user import RegisterUserGlobalyInteractor
 from .unregister_user import UnRegisterUserGlobalyInteractor
 from .set_emoji import SetEmojiGlobalyInteractor
 from .unset_emoji import UnSetEmojiGlobalyInteractor
+from .get_settings import GetSettingsInteractor
 
 __all__ = (
     "StartInteractor",
@@ -10,4 +11,5 @@ __all__ = (
     "UnRegisterUserGlobalyInteractor",
     "SetEmojiGlobalyInteractor",
     "UnSetEmojiGlobalyInteractor",
+    "GetSettingsInteractor",
 )

@@ -7,6 +7,7 @@ from src.app.application.interactors.private import (
     UnRegisterUserGlobalyInteractor,
     SetEmojiGlobalyInteractor,
     UnSetEmojiGlobalyInteractor,
+    GetSettingsInteractor,
 )
 
 
@@ -18,3 +19,4 @@ class PrivateProvider(Provider):
     unregister_user = provide(UnRegisterUserGlobalyInteractor)
     set_emoji = provide(SetEmojiGlobalyInteractor)
     unset_emoji = provide(UnSetEmojiGlobalyInteractor)
+    get_settings = provide(GetSettingsInteractor)

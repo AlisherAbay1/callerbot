@@ -9,6 +9,7 @@ from src.app.application.interactors.private import (
     UnRegisterUserGlobalyInteractor,
     SetEmojiGlobalyInteractor,
     UnSetEmojiGlobalyInteractor,
+    GetSettingsInteractor,
 )
 from emoji import is_emoji, emoji_count
 
@@ -34,7 +35,7 @@ async def start(message: Message, interactor: FromDishka[StartInteractor]):
             /unreg - вас уберут из регистрации во всех чатах по дефолту. 
             /setme (emoji) - устанавливает глобальный эмодзи.
             /unsetme - убирает глобальный эмодзи.
-            /showsettings - вы увидите свои настройки. Глобальные и локальные. 
+            /getsettings - вы увидите свои настройки. Глобальные и локальные. 
 
             В личных сообщениях вы можете выбрать глобальный параметр регистации, 
             однако локальные параметры регистрации имеют больший приоритет. 
@@ -43,14 +44,14 @@ async def start(message: Message, interactor: FromDishka[StartInteractor]):
     await message.answer(inspect.cleandoc(text))
 
 
-@router.message(Command("reg"), F.from_user)
+@router.message(Command("reg"), (F.chat.type == "private") & F.from_user)
 async def reg(message: Message, interactor: FromDishka[RegisterUserGlobalyInteractor]):
     assert message.from_user
     await interactor(message.from_user.id)
     await message.answer("Вы установили глобальную регистрацию.")
 
 
-@router.message(Command("unreg"), F.from_user)
+@router.message(Command("unreg"), (F.chat.type == "private") & F.from_user)
 async def unreg(
     message: Message, interactor: FromDishka[UnRegisterUserGlobalyInteractor]
 ):
@@ -59,7 +60,7 @@ async def unreg(
     await message.answer("Вы убрали глобальную регистрацию.")
 
 
-@router.message(Command("setme"), F.from_user)
+@router.message(Command("setme"), (F.chat.type == "private") & F.from_user)
 async def setme(
     message: Message,
     command: CommandObject,
@@ -70,7 +71,6 @@ async def setme(
     if text is None:
         await message.answer("Вы должны передать смайлик.")
         return
-    print(text)
     if not (is_emoji(text) and emoji_count(text) == 1):
         await message.answer("Передайте эмодзи.")
         return
@@ -78,7 +78,7 @@ async def setme(
     await message.answer(f"Вы установили глобальный эмодзи: {text}")
 
 
-@router.message(Command("unsetme"), F.from_user)
+@router.message(Command("unsetme"), (F.chat.type == "private") & F.from_user)
 async def unsetme(
     message: Message,
     interactor: FromDishka[UnSetEmojiGlobalyInteractor],
@@ -86,3 +86,27 @@ async def unsetme(
     assert message.from_user
     await interactor(message.from_user.id)
     await message.answer("Вы убрали глобальный эмодзи")
+
+
+@router.message(Command("getsettings"), (F.chat.type == "private") & F.from_user)
+async def getsettings(
+    message: Message,
+    interactor: FromDishka[GetSettingsInteractor],
+):
+    assert message.from_user
+    dto = await interactor(message.from_user.id)
+    global_settings = f"""
+                Глобальные настройки:
+                Глобальная регистрация: {["Выключена", "Включена"][dto.is_globally_registered]}
+                Глобальное эмодзи: {"Нету" if dto.global_emoji is None else dto.global_emoji}
+                """
+    await message.answer(inspect.cleandoc(global_settings))
+    local_settings = ["Локальные настройки:"] + [
+        inspect.cleandoc(f"""
+                        Айди чата: {chat.tg_id}
+                        Локальная регистрация: {["Выключена", "Включена"][chat.is_registered]}
+                        Локальное эмодзи: {"Нету" if chat.emoji is None else chat.emoji}
+                       """)
+        for chat in dto.chats
+    ]
+    await message.answer("\n\n".join(local_settings))

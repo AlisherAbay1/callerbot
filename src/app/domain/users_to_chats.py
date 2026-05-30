@@ -1,7 +1,11 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import VARCHAR, ForeignKey
 from src.app.domain.base import Base
 from uuid import UUID
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.app.domain.chat import Chat
 
 
 class UsersToChats(Base, kw_only=True):
@@ -15,3 +19,5 @@ class UsersToChats(Base, kw_only=True):
     )
     is_registered: Mapped[bool] = mapped_column(default=False)
     emoji: Mapped[str] = mapped_column(VARCHAR(16))
+
+    chat: Mapped["Chat"] = relationship(init=False, lazy="noload")  # type: ignore
