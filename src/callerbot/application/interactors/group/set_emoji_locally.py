@@ -16,8 +16,8 @@ class SetEmojiLocallyInteractor:
         self.chat_member_repo = chat_member_repo
         self.uow = uow
 
-    async def __call__(self, tg_id: int, emoji: str):
-        user = await self.user_repo.get_user_by_tg_id(tg_id)
+    async def __call__(self, user_tg_id: int, emoji: str):
+        user = await self.user_repo.get_user_by_tg_id(user_tg_id)
         if user is None:
             raise
         chat_member = await self.chat_member_repo.get_chat_member_by_user_id(user.id)

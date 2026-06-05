@@ -70,5 +70,5 @@ async def setme_locally(
     if not (is_emoji(emoji) and emoji_count(emoji) == 1):
         await message.answer("Передайте эмодзи.")
         return
-    await interactor(tg_id=message.from_user.id, emoji=emoji)
+    await interactor(user_tg_id=message.from_user.id, emoji=emoji)
     await message.answer(f"Вы установили локальный эмодзи: {emoji}")
