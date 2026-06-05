@@ -1,4 +1,6 @@
 # Callerbot
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 Tired of tagging people one by one? This bot does it for you.
 Send `/all` — everyone who opted in gets tagged. That's it.
