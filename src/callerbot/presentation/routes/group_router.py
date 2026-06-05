@@ -10,6 +10,7 @@ from callerbot.application.interactors.group import (
     UnRegisterUserLocallyInteractor,
     SetEmojiLocallyInteractor,
     RandomEmojiLocallyInteractor,
+    GetRegistredChatMembersInteractor,
 )
 from callerbot.presentation.middlware import GroupMiddleware
 from emoji import is_emoji, emoji_count
@@ -98,3 +99,20 @@ async def randomemoji_locally(
     assert message.from_user
     emoji = await interactor(message.from_user.id)
     await message.answer(f"Вы получили случайный эмодзи: {emoji}")
+
+
+@router.message(Command("all"))
+async def teg_all(
+    message: Message, interactor: FromDishka[GetRegistredChatMembersInteractor]
+):
+    assert message.from_user
+    chat_members = await interactor(message.chat.id)
+    await message.answer(f"{message.from_user.full_name} запустил призыв:")
+
+    mentions = [
+        f"[{chat_member.user_emoji}](tg://user?id={chat_member.user_tg_id})"
+        for chat_member in chat_members
+    ]
+
+    for i in range(0, len(chat_members), 5):
+        await message.answer(" ".join(mentions[i : i + 5]), parse_mode="Markdown")

@@ -4,6 +4,7 @@ from .create_models import CreateModelsInteractor
 from .unregister_user_locally import UnRegisterUserLocallyInteractor
 from .set_emoji_locally import SetEmojiLocallyInteractor
 from .random_emoji_locally import RandomEmojiLocallyInteractor
+from .get_registred_chat_members import GetRegistredChatMembersInteractor
 
 __all__ = (
     "RegisterUserLocallyInteractor",
@@ -12,4 +13,5 @@ __all__ = (
     "UnRegisterUserLocallyInteractor",
     "SetEmojiLocallyInteractor",
     "RandomEmojiLocallyInteractor",
+    "GetRegistredChatMembersInteractor",
 )

@@ -1,3 +1,7 @@
 from .user import UserMapperExtended
+from .chat_member import ChatMembersMapperExtended
 
-__all__ = ("UserMapperExtended",)
+__all__ = (
+    "UserMapperExtended",
+    "ChatMembersMapperExtended",
+)

@@ -1,7 +1,6 @@
 from callerbot.infrastructure.database.models import User, Chat, ChatMember
-from typing import Protocol
+from typing import Protocol, Optional, Sequence
 
-from typing import Optional
 from uuid import UUID
 
 
@@ -19,3 +18,6 @@ class ChatRepositoryProtocol(Protocol):
 
 class ChatMemberRepositoryProtocol(Protocol):
     async def get_chat_member_by_user_id(self, tg_id: UUID) -> Optional[ChatMember]: ...
+    async def get_registred_chat_members_by_chat_id(
+        self, chat_id: UUID
+    ) -> Sequence[ChatMember]: ...

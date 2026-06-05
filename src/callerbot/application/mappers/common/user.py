@@ -1,5 +1,6 @@
 from callerbot.application.dto.common import UserDTO
 from callerbot.infrastructure.database.models import User
+from typing import Sequence
 
 
 class UserMapper:
@@ -11,3 +12,7 @@ class UserMapper:
             global_emoji=model.global_emoji,
         )
         return user
+
+    @staticmethod
+    def to_dtos(models: Sequence[User]) -> list[UserDTO]:
+        return [UserMapper.to_dto(model) for model in models]

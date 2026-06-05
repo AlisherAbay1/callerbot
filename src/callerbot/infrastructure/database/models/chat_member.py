@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from callerbot.infrastructure.database.models.chat import Chat
+    from callerbot.infrastructure.database.models.user import User
 
 
 class ChatMember(Base, kw_only=True):
@@ -20,4 +21,5 @@ class ChatMember(Base, kw_only=True):
     is_registered: Mapped[bool] = mapped_column(default=False)
     emoji: Mapped[str] = mapped_column(VARCHAR(16))
 
-    chat: Mapped["Chat"] = relationship(init=False, lazy="noload")
+    chat: Mapped["Chat"] = relationship(init=False, lazy="noload", viewonly=True)
+    user: Mapped["User"] = relationship(init=False, lazy="noload", viewonly=True)
