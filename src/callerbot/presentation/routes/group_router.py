@@ -9,6 +9,7 @@ from callerbot.application.interactors.group import (
     JoinChatInteractor,
     UnRegisterUserLocallyInteractor,
     SetEmojiLocallyInteractor,
+    RandomEmojiLocallyInteractor,
 )
 from callerbot.presentation.middlware import GroupMiddleware
 from emoji import is_emoji, emoji_count
@@ -33,9 +34,24 @@ async def on_chat_joining(
             /reg - регистрирует вас в список вызываемых юзеров. 
             /unreg - убирает вас в список вызываемых юзеров.
             /setme (emoji) - устанавливает эмодзи. 
-            /unsetme (emoji) - убирает эмодзи. 
+            /randomemoji - устанавливает случайный эмодзи. 
+            /help - получить список команд.
            """
     await event.answer(inspect.cleandoc(text))
+
+
+@router.message(Command("help"))
+async def help(message: Message):
+    text = """ 
+            Список команд для чата:
+            /all - тегает всех юзеров, которые дали на это согласие. 
+            /reg - регистрирует вас в список вызываемых юзеров. 
+            /unreg - убирает вас в список вызываемых юзеров.
+            /setme (emoji) - устанавливает эмодзи. 
+            /randomemoji - устанавливает случайный эмодзи. 
+            /help - получить список команд.
+           """
+    await message.answer(inspect.cleandoc(text))
 
 
 @router.message(Command("reg"))
@@ -72,3 +88,13 @@ async def setme_locally(
         return
     await interactor(user_tg_id=message.from_user.id, emoji=emoji)
     await message.answer(f"Вы установили локальный эмодзи: {emoji}")
+
+
+@router.message(Command("randomemoji"))
+async def randomemoji_locally(
+    message: Message,
+    interactor: FromDishka[RandomEmojiLocallyInteractor],
+):
+    assert message.from_user
+    emoji = await interactor(message.from_user.id)
+    await message.answer(f"Вы получили случайный эмодзи: {emoji}")
