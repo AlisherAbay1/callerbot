@@ -1,7 +1,7 @@
 [database]
 name="callerbot"
-username="postgres"
-host="localhost"
+username="neondb_owner"
+host="ep-billowing-dew-apj9kzix-pooler.c-7.us-east-1.aws.neon.tech"
 port=5432
 
 [telegram]
