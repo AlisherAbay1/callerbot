@@ -16,7 +16,6 @@ class GroupMiddleware(BaseMiddleware):
     ) -> Any:
         if isinstance(event, Message):
             if event.chat.type not in ("group", "supergroup"):
-                print("Middleware ignored")
                 return await handler(event, data)
             container = data.get("dishka_container")
             if container is None:
@@ -26,5 +25,4 @@ class GroupMiddleware(BaseMiddleware):
                 CreateModelsInteractor
             )
             await interactor(user_tg_id=event.from_user.id, chat_tg_id=event.chat.id)
-            print("Middleware worked")
         return await handler(event, data)

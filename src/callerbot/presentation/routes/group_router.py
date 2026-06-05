@@ -7,6 +7,7 @@ from dishka import FromDishka
 from callerbot.application.interactors.group import (
     RegisterUserLocallyInteractor,
     JoinChatInteractor,
+    UnRegisterUserLocallyInteractor,
 )
 from callerbot.presentation.middlware import GroupMiddleware
 
@@ -42,3 +43,12 @@ async def reg_locally(
     assert message.from_user
     await interactor(user_tg_id=message.from_user.id)
     await message.answer("Вы установили локальную регистрацию.")
+
+
+@router.message(Command("unreg"))
+async def unreg_locally(
+    message: Message, interactor: FromDishka[UnRegisterUserLocallyInteractor]
+):
+    assert message.from_user
+    await interactor(user_tg_id=message.from_user.id)
+    await message.answer("Вы убрали локальную регистрацию.")
