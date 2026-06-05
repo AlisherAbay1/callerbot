@@ -4,6 +4,7 @@ from callerbot.application.interactors.group import (
     JoinChatInteractor,
     CreateModelsInteractor,
     UnRegisterUserLocallyInteractor,
+    SetEmojiLocallyInteractor,
 )
 from callerbot.application.services import (
     GetOrCreateChatMemberService,
@@ -19,3 +20,4 @@ class GroupProvider(Provider):
     unregister_user_locally = provide(UnRegisterUserLocallyInteractor)
     join_chat = provide(JoinChatInteractor)
     create_models = provide(CreateModelsInteractor)
+    set_emoji_locally = provide(SetEmojiLocallyInteractor)

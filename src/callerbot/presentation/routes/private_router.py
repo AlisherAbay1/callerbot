@@ -70,15 +70,15 @@ async def setme_globally(
     interactor: FromDishka[SetEmojiGlobalyInteractor],
 ):
     assert message.from_user
-    text = command.args
-    if text is None:
+    emoji = command.args
+    if emoji is None:
         await message.answer("Вы должны передать смайлик.")
         return
-    if not (is_emoji(text) and emoji_count(text) == 1):
+    if not (is_emoji(emoji) and emoji_count(emoji) == 1):
         await message.answer("Передайте эмодзи.")
         return
-    await interactor(message.from_user.id, text)
-    await message.answer(f"Вы установили глобальный эмодзи: {text}")
+    await interactor(message.from_user.id, emoji)
+    await message.answer(f"Вы установили глобальный эмодзи: {emoji}")
 
 
 @router.message(Command("unsetme"))
