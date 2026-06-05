@@ -11,6 +11,7 @@ _TOML_CONFIG = Path(__file__).parents[3] / "config.toml"
 @dataclass
 class TelegramConfig:
     bot_token: SecretStr
+    webhooks_url: str
 
 
 @dataclass
@@ -44,6 +45,7 @@ def load_config():
         EnvFileSource(
             file=_ENV_CONFIG, field_mapping={F[TelegramConfig].bot_token: "BOT_TOKEN"}
         ),
+        Toml10Source(file=_TOML_CONFIG, prefix="telegram"),
         schema=TelegramConfig,
     )
     database = load(

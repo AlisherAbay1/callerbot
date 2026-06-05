@@ -3,3 +3,6 @@ name="callerbot"
 username="postgres"
 host="localhost"
 port=5432
+
+[telegram]
+webhooks_url="callerbot-delta.vercel.app"
