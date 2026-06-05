@@ -8,9 +8,12 @@ from callerbot.application.interactors.group import (
     RegisterUserLocallyInteractor,
     JoinChatInteractor,
 )
+from callerbot.presentation.middlware import GroupMiddleware
 
 router = Router(name="group common router")
 router.my_chat_member.filter(F.chat.type.in_(("group", "supergroup")) & F.from_user)
+router.message.filter(F.chat.type.in_(("group", "supergroup")) & F.from_user)
+router.message.outer_middleware(GroupMiddleware())
 
 
 @router.my_chat_member(ChatMemberUpdatedFilter(member_status_changed=JOIN_TRANSITION))
@@ -37,6 +40,5 @@ async def reg_locally(
     message: Message, interactor: FromDishka[RegisterUserLocallyInteractor]
 ):
     assert message.from_user
-    assert message.chat
-    await interactor(user_tg_id=message.from_user.id, chat_tg_id=message.chat.id)
+    await interactor(user_tg_id=message.from_user.id)
     await message.answer("Вы установили локальную регистрацию.")

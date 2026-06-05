@@ -2,6 +2,7 @@ from dishka import Provider, Scope, provide
 from callerbot.application.interactors.group import (
     RegisterUserLocallyInteractor,
     JoinChatInteractor,
+    CreateModelsInteractor,
 )
 from callerbot.application.services import (
     GetOrCreateChatMemberService,
@@ -15,3 +16,4 @@ class GroupProvider(Provider):
     get_or_create_user_service = provide(GetOrCreateUserService)
     register_user_locally = provide(RegisterUserLocallyInteractor)
     join_chat = provide(JoinChatInteractor)
+    create_models = provide(CreateModelsInteractor)

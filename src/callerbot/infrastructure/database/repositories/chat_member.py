@@ -14,7 +14,7 @@ class ChatMemberRepository(ChatMemberRepositoryProtocol):
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def get_chat_member_by_chat_id(self, tg_id: UUID) -> Optional[ChatMember]:
-        stmt = select(ChatMember).where(ChatMember.chat_id == tg_id)
+    async def get_chat_member_by_user_id(self, tg_id: UUID) -> Optional[ChatMember]:
+        stmt = select(ChatMember).where(ChatMember.user_id == tg_id)
         chat_member = await self._session.scalar(stmt)
         return chat_member
